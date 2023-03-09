@@ -1,6 +1,6 @@
-# TrustZone for the Discovery-B-U585I-IoT2A in VS Code
+# TrustZone for the NUCLEO-U575ZI-Q in VS Code
 
-This is a demonstration of starting the GPIO_IOToggle_TrustZone example for the Discovery-B-U585I-IoT2A and importing it into VS Code. I'm going to show two ways to do this, an Easy Way and a Complete way. This repo contains the files for the Complete way.
+This is a demonstration of starting the GPIO_IOToggle_TrustZone example for the Nucleo-U575ZI-Q and importing it into VS Code. I'm going to show two ways to do this, an Easy Way and a Complete way. This repo contains the files for the Complete way.
 
 While this is for a specific STM32 Sample, you can view this as two ways to approach getting a multiproject STM32 sample into VS Code. The Easy Way just imports the individual projects, then with minor modifications sets them up for build and debug. The Complete way creates a new CMake project for both of the STM32 projects converted for VS Code.
 
@@ -15,7 +15,7 @@ This project is about how to get this example into VS Code, it doesn't cover muc
 To use this just clone this repo and you can open in VS Code. Make sure you have completed the setup steps, then you can jump ahead to building the firmware.
 
 ```
-git clone https://github.com/robotdad/GPIO_IOToggle_TrustZone_Discovery_U5.git
+git clone https://github.com/robotdad/GPIO_IOToggle_TrustZone_Nucleo_U5.git
 cd 
 code .
 ```
@@ -28,7 +28,7 @@ I have included the steps for creating git repos and connecting them to GitHub b
 
 # GPIO_IOToggle_TrustZone example from CubeMX
 
-In CubeMX go to example selector, search for the Discovery-B-U585I-IoT2A in the board name, find the GPIO_IOToggle_TrustZone example, select it, and start project. This will prompt you for a location for the project, pick a location and open with CubeMX.
+In CubeMX go to example selector, search for the Nucleo-U575ZI-Q in the board name, find the GPIO_IOToggle_TrustZone example, select it, and start project. This will prompt you for a location for the project, pick a location and open with CubeMX.
 
 Go to the Project Manager tab, select STM32CubeIDE as the toolchain with Generate Under Root selected, now generate the code. Ignore the warnings that pop up.
 
@@ -78,7 +78,7 @@ However, the .cproject for the NonSecure project also refers to the Secure proje
 ## Open the root project folder
 Close the NonSecure folder in VS Code, then open the parent folder where the example was generated. You may get some prompts to select CMake files from subfolders, disregard that for now while we set things up.
 
-You should now create a .gitignore file. Minimally make sure to exclude the build folder by adding the line "build/" to the file. You can also copy a [complete .gitignore from here](https://raw.githubusercontent.com/robotdad/GPIO_IOToggle_TrustZone_Discovery_U5/main/.gitignore). When done commit the file. 
+You should now create a .gitignore file. Minimally make sure to exclude the build folder by adding the line "build/" to the file. You can also copy a [complete .gitignore from here](https://raw.githubusercontent.com/robotdad/GPIO_IOToggle_TrustZone_Nucleo_U5/main/.gitignore). When done commit the file. 
 
 Now the only changes listed in the git sidebar should be the generated artifacts from the import and the workspace file you created. 
 
@@ -102,7 +102,7 @@ Now create a CMakeLists.txt in the root with the following content.
 ```
 cmake_minimum_required(VERSION 3.20)
 
-project("GPIO_IOToggle_TrustZone_Discovery_U5" C CXX ASM)
+project("GPIO_IOToggle_TrustZone_Nucleo_U5" C CXX ASM)
 
 add_subdirectory(Secure)
 add_subdirectory(NonSecure)
@@ -146,7 +146,7 @@ One initial launch you should see a break in the Reset_Handler of the secure fir
 Select continue in the debug toolbar. We'll now hit the breakpoint in the secure main on the HAL_GPIO_TogglePin. Press continue to get to the next breakpoint. You will notice that you are hitting breakpoints across the secure and nonsecure code.
 
 ### Examine peripheral registers
-When you hit a break point at HAL_GPIO_TogglePin open the peripheral view from the command palette, select Focus on peripheral view. Expand the view that opens in the debug pane. The GPIO port and pin naming is clear in these variable names, we're using GPIOH and pins 6 and 7. Find the GPIOH section in the peripheral view. The pins are under the ODR section. You can step over the HAL_GPIO_TogglePin call and either watch the value for ODR change, or expand it to see the specific pin value update.
+When you hit a break point at HAL_GPIO_TogglePin open the peripheral view from the command palette, select Focus on peripheral view. Expand the view that opens in the debug pane. The GPIO port and pin naming is clear in these variable names, we're using GPIOB and GPIOC both on pin 7. Find the relevant GPIO section in the peripheral view for your breakpoint. The pins are under the ODR section. You can step over the HAL_GPIO_TogglePin call and either watch the value for ODR change, or expand it to see the specific pin value update.
 
 If the variable names were not clear, you could highlight them and select Peek, Peek Definition which would show you the underlying values.
 
