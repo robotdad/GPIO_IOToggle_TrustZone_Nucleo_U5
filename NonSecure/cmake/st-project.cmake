@@ -3,19 +3,6 @@
 
 function(add_st_target_properties TARGET_NAME)
 
-execute_process(
-    COMMAND ${CMAKE_COMMAND} --preset ${PRESET_NAME}
-    WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/..\\Secure"
-)
-
-add_custom_target(
-    "GPIO_IOToggle_TrustZone_Secure"
-    COMMAND ${CMAKE_COMMAND} --build --preset ${PRESET_NAME}
-    WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/..\\Secure"
-)
-
-add_dependencies(${TARGET_NAME} "GPIO_IOToggle_TrustZone_Secure")
-
 target_compile_definitions(
     ${TARGET_NAME} PRIVATE
     "$<$<AND:$<CONFIG:Debug>,$<COMPILE_LANGUAGE:ASM>>:DEBUG>"
@@ -83,8 +70,8 @@ target_link_options(
     -T
     "$<$<CONFIG:Debug>:${PROJECT_SOURCE_DIR}/STM32U575ZITX_FLASH.ld>"
     "$<$<NOT:$<CONFIG:Debug>>:${PROJECT_SOURCE_DIR}/STM32U575ZITX_FLASH.ld>"
-    "$<$<CONFIG:Debug>:${PROJECT_SOURCE_DIR}/..\\Secure\\build\\debug\\build\\secure_nsclib.o>"
-    "$<$<NOT:$<CONFIG:Debug>>:${PROJECT_SOURCE_DIR}/..\\Secure\\build\\release\\build\\secure_nsclib.o>"
+    "$<$<CONFIG:Debug>:${PROJECT_SOURCE_DIR}/..\\build\\debug\\build\\secure_nsclib.o>"
+    "$<$<NOT:$<CONFIG:Debug>>:${PROJECT_SOURCE_DIR}/..\\build\\release\\build\\secure_nsclib.o>"
 )
 
 target_sources(
